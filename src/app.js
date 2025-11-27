@@ -1,5 +1,6 @@
 import express from 'express'
 import routes from './routes/index.js'
+import {logger} from './config/logger.js'
 
 export class App{
     constructor(){
@@ -22,7 +23,7 @@ export class App{
    
     listen(port){
         return this.express.listen(port, ()=>{
-            console.log(`API em http://localhost:${port}`);
+           logger.info(`API em http://localhost:${port}`);
             
         })
 

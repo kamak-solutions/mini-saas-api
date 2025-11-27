@@ -1,5 +1,6 @@
 import pg from 'pg';
 import { ENV } from './env.js';
+import { logger } from './logger.js';
 
 const { Pool } = pg;
 
@@ -11,9 +12,9 @@ export const pool = new Pool({
 (async () => {
   try {
     await pool.query('SELECT NOW()');
-    console.log('✅ Postgres conectado');
+    logger.info('✅ Postgres conectado');
   } catch (err) {
-    console.error('❌ Postgres erro:', err);
+    logger.error('❌ Postgres erro:', err);
     process.exit(1);
   }
 })();
