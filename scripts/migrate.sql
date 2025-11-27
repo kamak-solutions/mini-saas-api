@@ -1,0 +1,5 @@
+CREATE TABLE tenants (
+id 	SERIAL PRIMARY KEY,
+nome    TEXT NOT NULL UNIQUE,
+created_at TIMESTAMP DEFAULT NOW()
+);
