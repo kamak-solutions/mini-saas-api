@@ -13,7 +13,7 @@ export class App{
     }
     listen(port){
         return this.express.listen(port, ()=>{
-            console.log(`API em kttp://localhost:${port}`);
+            console.log(`API em http://localhost:${port}`);
             
         })
     }

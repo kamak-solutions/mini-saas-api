@@ -1,8 +1,7 @@
 import{App} from './app.js'
+import { ENV } from './config/env.js'
 
 
 const app = new App()
 
-const port = process.env.PORT || 3000
-
-app.listen(port)
+app.listen(ENV.PORT)
