@@ -1,9 +1,9 @@
-import {pool} from ',,/../config/db.js'
+import {pool} from '../../config/db.js'
 
 export class TenantRepository{
     async create({name}){
         const {rows} = await pool.query(
-            'INSERT INTO tenants (nome) VALUES ($1), RETURNING*',
+            'INSERT INTO tenants (nome) VALUES ($1) RETURNING*',
             [name]
         )
         return rows[0]
