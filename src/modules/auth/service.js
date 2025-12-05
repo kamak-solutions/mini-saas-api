@@ -42,5 +42,35 @@ export class AuthService {
     this.logger.info('JWT gerado para user %s', user.id);
     return { user, tenant, token };
   }
+  async login({ email, password }) {
+  this.logger.info('Tentativa login %s', email);
+
+  const user = await this.repo.findUserByEmail(email);
+  if (!user) throw new Error('Credenciais inválidas');
+
+  const ok = await bcrypt.compare(password, user.password_hash);
+  if (!ok) throw new Error('Credenciais inválidas');
+
+  const token = jwt.sign(
+    { uid: user.id, tenantId: user.tenant_id, role: user.role },
+    ENV.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  this.logger.info('Login ok user=%s', user.id);
+  return { user, token };
+}
+async inviteMember({ tenantId, email }) {
+  // gera senha aleatória e envia e-mail (simplificado)
+  const tempPassword = Math.random().toString(36).slice(-8);
+  const hash = await bcrypt.hash(tempPassword, 12);
+  const user = await this.repo.createUser({
+    tenantId,
+    email,
+    hash,
+    role: 'member',
+  });
+  return { user, tempPassword }; // enviar por e-mail depois
+}
 }
   

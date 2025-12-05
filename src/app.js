@@ -14,12 +14,8 @@ export class App{
         this.express.use(express.json())
 
          // Segurança com Helmet
-        this.express.use(
-            helmet({
-                contentSecurityPolicy: false,  // Evita conflitos com requisições externas
-                crossOriginEmbedderPolicy: false
-            })
-        )
+        this.express.use(helmet())
+       
     
     }
     routes() {

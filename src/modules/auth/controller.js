@@ -1,4 +1,5 @@
 import { signupSchema } from './validation.js';
+import { loginSchema } from './validation.js';
 
 export class AuthController {
   constructor(service) {
@@ -19,4 +20,18 @@ export class AuthController {
       next(e);
     }
   };
+
+  
+login = async (req, res, next) => {
+  try {
+    const dto = loginSchema.parse(req.body);
+    const result = await this.service.login(dto);
+    res.json(result);
+  } catch (e) {
+    if (e.name === 'ZodError') {
+      return res.status(400).json({ message: 'Dados inválidos', errors: e.issues });
+    }
+    next(e);
+  }
+};
 }
