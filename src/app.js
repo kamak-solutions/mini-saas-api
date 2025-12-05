@@ -1,4 +1,5 @@
 import express from 'express'
+import helmet from 'helmet'
 import routes from './routes/index.js'
 import {logger} from './config/logger.js'
 
@@ -11,6 +12,15 @@ export class App{
     }
     middlewares(){
         this.express.use(express.json())
+
+         // Segurança com Helmet
+        this.express.use(
+            helmet({
+                contentSecurityPolicy: false,  // Evita conflitos com requisições externas
+                crossOriginEmbedderPolicy: false
+            })
+        )
+    
     }
     routes() {
   console.log('1 - entrando em routes');

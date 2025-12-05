@@ -9,6 +9,7 @@ import projectRoutes from '../modules/projects/routes.js'
 const api = Router()
 
 api.use('/health',healthRoutes)
+api.use('/',healthRoutes)
 api.use('/tenants', tenantRoutes)
 api.use('/auth', authRoutes)
 //api.use('/projects', auth, projectRoutes)
