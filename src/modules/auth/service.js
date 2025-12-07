@@ -72,5 +72,24 @@ async inviteMember({ tenantId, email }) {
   });
   return { user, tempPassword }; // enviar por e-mail depois
 }
+async inviteMember({ tenantId, email }) {
+  this.logger.info('Convite %s tenant=%s', email, tenantId);
+
+  const exists = await this.repo.findUserByEmail(email);
+  if (exists) throw new Error('Email já cadastrado');
+
+  const tempPassword = Math.random().toString(36).slice(-8);
+  const hash = await bcrypt.hash(tempPassword, 12);
+
+  const user = await this.repo.createUser({
+    tenantId,
+    email,
+    hash,
+    role: 'member',
+  });
+
+  this.logger.info('User convidado id=%s', user.id);
+  return { user, tempPassword }; // enviar email depois
+}
 }
   
