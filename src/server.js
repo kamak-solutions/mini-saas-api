@@ -1,8 +1,10 @@
-import{App} from './app.js'
-import { ENV } from './config/env.js'
-import './config/db.js'
+import { App } from './app.js';
+import { ENV } from './config/env.js';
+import './config/db.js';
 
+export const app = new App();
 
-const app = new App()
-
-app.listen(ENV.PORT)
+// inicia servidor ANTES de exportar
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(ENV.PORT);
+}
