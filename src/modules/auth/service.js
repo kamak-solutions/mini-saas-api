@@ -29,6 +29,7 @@ export class AuthService {
       tenantId: tenant.id,
       email,
       hash,
+      role:'admin',
     });
 
         this.logger.info('User criado id=%s tenant=%s', user.id, tenant.id);

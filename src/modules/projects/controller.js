@@ -24,7 +24,7 @@ export class ProjectsController {
   get = async (req, res, next) => {
     try {
       const proj = await this.service.getProject(req.tenantId, req.params.id);
-      res.json(proj);
+      res.json({ message: 'Project deletado com sucesso', project: proj })
     } catch (e) {
       next(e);
     }

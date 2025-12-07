@@ -21,6 +21,7 @@ export class ProjectsService {
   async removeProject(tenantId, id) {
     const proj = await this.repo.deleteByIdAndTenant(id, tenantId);
     if (!proj) throw new Error('Project not found');
+    this.logger.info('Project deletado id=%s tenant=%s', id, tenantId);
     return proj;
   }
 }

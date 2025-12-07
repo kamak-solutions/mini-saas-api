@@ -17,7 +17,7 @@ export class AuthRepository {
     );
     return rows[0];
   }
-  async createUser({ tenantId, email, hash, role = 'member' }) {
+  async createUser({ tenantId, email, hash, role = 'admin' }) {
   const { rows } = await pool.query(
     'INSERT INTO users (tenant_id, email, password_hash, role) VALUES ($1,$2,$3,$4) RETURNING *',
     [tenantId, email, hash, role]
