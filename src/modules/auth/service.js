@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import {ENV} from '../../config/env.js'
+import { generateAccessToken, generateRefreshToken } from './tokens.js';
 
 export class AuthService {
   constructor(repo, logger) {
@@ -90,6 +91,30 @@ async inviteMember({ tenantId, email }) {
 
   this.logger.info('User convidado id=%s', user.id);
   return { user, tempPassword }; // enviar email depois
+}
+async login({ email, password }) {
+  const user = await this.repo.findUserByEmail(email);
+  if (!user) throw new Error('Credenciais inválidas');
+
+  const ok = await bcrypt.compare(password, user.password_hash);
+  if (!ok) throw new Error('Credenciais inválidas');
+
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+
+  return { accessToken, refreshToken, user };
+}
+async refresh(refreshToken) {
+  if (!refreshToken) throw new Error('Refresh token missing');
+
+  const payload = jwt.verify(refreshToken, ENV.JWT_SECRET);
+  const user = await this.repo.findUserById(payload.uid);
+  if (!user || (user.token_version || 0) !== payload.version) {
+    throw new Error('Refresh token inválido');
+  }
+
+  const accessToken = generateAccessToken(user);
+  return { accessToken };
 }
 }
   

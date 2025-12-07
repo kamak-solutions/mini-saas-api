@@ -26,8 +26,16 @@ export class AuthController {
 login = async (req, res, next) => {
   try {
     const dto = loginSchema.parse(req.body);
-    const result = await this.service.login(dto);
-    res.json(result);
+    const { accessToken, refreshToken, user } = await this.service.login(dto);
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // https apenas em prod
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 dias
+    });
+
+    res.json({ accessToken, user });
   } catch (e) {
     if (e.name === 'ZodError') {
       return res.status(400).json({ message: 'Dados inválidos', errors: e.issues });
@@ -47,6 +55,14 @@ invite = async (req, res, next) => {
     if (e.name === 'ZodError') {
       return res.status(400).json({ message: 'Dados inválidos', errors: e.issues });
     }
+    next(e);
+  }
+};
+refresh = async (req, res, next) => {
+  try {
+    const result = await this.service.refresh(req.cookies.refreshToken);
+    res.json(result);
+  } catch (e) {
     next(e);
   }
 };

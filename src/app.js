@@ -2,6 +2,7 @@ import express from 'express'
 import helmet from 'helmet'
 import routes from './routes/index.js'
 import {logger} from './config/logger.js'
+import cookieParser from 'cookie-parser';
 
 export class App{
     constructor(){
@@ -15,6 +16,7 @@ export class App{
 
          // Segurança com Helmet
         this.express.use(helmet())
+        this.express.use(cookieParser())
        
     
     }
