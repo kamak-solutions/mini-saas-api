@@ -16,3 +16,4 @@ export default new Router()
   .get('/', auth, ctrl.list)
   .get('/:id', auth, ctrl.get)
   .delete('/:id', auth, requireAdmin, ctrl.remove)
+  .put('/:id', auth, requireAdmin, ctrl.update);

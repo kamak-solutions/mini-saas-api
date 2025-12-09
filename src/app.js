@@ -18,9 +18,10 @@ export class App {
     this.express.use(helmet());
     this.express.use(cookieParser());
     this.express.use(cors({
-    origin: ['http://localhost:3000', 'https://seu-front.netlify.app'],
+    origin: ['http://localhost:3001', 'http://localhost:3000', 'https://seu-front.netlify.app'],
     credentials: true,
   }));
+
   }
   routes() {
     console.log("1 - entrando em routes");

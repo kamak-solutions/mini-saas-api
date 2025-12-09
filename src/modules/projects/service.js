@@ -24,4 +24,10 @@ export class ProjectsService {
     this.logger.info('Project deletado id=%s tenant=%s', id, tenantId);
     return proj;
   }
+   async updateProject(tenantId, id, dto) {
+  if (!dto.name) throw new Error('Nome obrigatório');
+  const proj = await this.repo.updateByIdAndTenant(id, tenantId, { name: dto.name });
+  if (!proj) throw new Error('Project not found');
+  return proj;
+}
 }

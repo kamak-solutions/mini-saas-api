@@ -38,4 +38,11 @@ export class ProjectsRepository {
     );
     return rows[0];
   }
+   async updateByIdAndTenant(id, tenantId, fields) {
+  const { rows } = await pool.query(
+    'UPDATE projects SET name = $1 WHERE id = $2 AND tenant_id = $3 RETURNING *',
+    [fields.name, id, tenantId]
+  );
+  return rows[0];
+}
 }

@@ -38,4 +38,12 @@ export class ProjectsController {
       next(e);
     }
   };
+  update = async (req, res, next) => {
+    try {
+      const proj = await this.service.updateProject(req.tenantId, req.params.id, req.body);
+      res.json({ message: 'Project atualizado', project: proj });
+    } catch (e) {
+      next(e);
+    }
+  };
 }
